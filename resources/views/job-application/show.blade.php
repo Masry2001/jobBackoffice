@@ -6,7 +6,6 @@
   </x-slot>
 
 
-
   <div class="py-12">
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -21,11 +20,11 @@
           <p class="text-sm text-gray-600"><strong>Company:</strong>
             {{ $jobApplication?->jobVacancy?->company?->name ?? 'N/A' }}
           </p>
-          @if($jobApplication?->resume?->fileUri)
+          @if($jobApplication?->resume?->publicUrl)
             <p class="text-sm text-gray-600"><strong>Resume:</strong>
-              <a class="text-blue-600 hover:underline" href="{{ $jobApplication->resume->fileUri }}" target="_blank"
+              <a class="text-blue-600 hover:underline" href="{{ $jobApplication->resume->publicUrl }}" target="_blank"
                 rel="noopener noreferrer">
-                {{ $jobApplication->resume->fileUri }}
+                {{ $jobApplication->resume->fileName }}
               </a>
             </p>
           @else
