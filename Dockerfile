@@ -60,8 +60,7 @@ RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 COPY Caddyfile /etc/caddy/Caddyfile
 
 # Expose ports
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
 
 # Start FrankenPHP
 CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"] 
