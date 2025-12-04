@@ -1,16 +1,17 @@
 # Job Board Application
 
 A complete job board system with two applications:
-- **Job Backoffice**: Admin panel for companies and administrators
+- **Job Backoffice**: Admin panel for Company Owners and Admin
 - **Job App**: Job seeker interface with AI-powered resume parsing
 
 ## 🏗️ Architecture
 
 This project consists of three repositories:
 
-1. **job-backoffice** (this repo): Admin panel, database management
+1. **job-backoffice** (this repo): Admin panel, database management (Migrations, Seeders, etc...)
 2. **job-app**: Job seeker application
 3. **job-shared**: Shared models used by both applications
+4. **job-board-design**: pdf and jbg Files (ERD, C4 Diagram, etc...)
 
 Both applications connect to the same database, which is managed by job-backoffice.
 
@@ -43,7 +44,8 @@ Before you begin, ensure you have installed:
 
 ```bash
 # Clone the repository
-git clone <job-backoffice-repo-url>
+git clone https://github.com/Masry2001/jobBackoffice.git
+#using github CLI: gh repo clone Masry2001/jobBackoffice
 cd job-backoffice
 
 # Run setup script
@@ -69,7 +71,8 @@ In a **new terminal window**:
 
 ```bash
 # Clone the repository
-git clone <job-app-repo-url>
+git clone https://github.com/Masry2001/jobApp.git
+#using github CLI: gh repo clone Masry2001/jobApp
 cd job-app
 
 # Run setup script
@@ -90,8 +93,8 @@ chmod +x setup.sh
 After seeding, use these credentials to login to the backoffice:
 
 - **URL**: http://localhost:8000
-- **Email**: (Check your seeder file)
-- **Password**: (Check your seeder file)
+- **Email**: admin@gmail.com
+- **Password**: admin1234
 
 ## 🌐 Application URLs
 
@@ -110,7 +113,12 @@ Both applications come with pre-configured `.env.example` files. The setup scrip
 **Important variables already configured:**
 
 - **Database**: Shared MariaDB database
-- **Gemini API**: Pre-configured for AI features
+- **Gemini API**: This is not Pre-configured You have to creaet.
+   steps to create Gemini API Key
+   1- go to https://aistudio.google.com/api-keys
+   2- click on Create API Key
+   3- Name Your Key and create a project for it
+   4- take the key and put it in .env file, put it as a value for this key GEMINI_API_KEY
 - **Supabase**: Pre-configured for resume storage
 
 ### Custom Configuration
@@ -123,7 +131,7 @@ If you want to use your own API keys:
    - `SUPABASE_*` - Your Supabase credentials
 3. Restart the container: `docker-compose restart`
 
-## 📦 Project Structure
+## Project Structure
 
 ```
 job-backoffice/          # This repository
@@ -142,7 +150,7 @@ job-shared/              # Separate repository
 └── (Shared models package)
 ```
 
-## 🐳 Docker Commands
+## Docker Commands
 
 ### Job Backoffice
 
@@ -191,7 +199,7 @@ docker-compose exec app bash
 docker-compose exec app pdftotext -v
 ```
 
-## 🔄 Development Workflow
+## Development Workflow
 
 ### Making Changes
 
@@ -346,6 +354,7 @@ If creating your own Supabase project:
 ## 📄 License
 
 MIT Licence
+
 ## 💬 Support
 
 If you encounter issues:
@@ -374,4 +383,4 @@ If you encounter issues:
 
 ---
 
-**Happy Coding! 🚀**
+**Happy Coding!**
