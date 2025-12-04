@@ -87,9 +87,16 @@
                 <x-input-label for="companyId" :value="__('Company')" />
                 <select name="companyId" id="companyId" :value="old('companyId', $jobVacancy->companyId)"
                   class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg">
-                  @foreach ($companies as $company)
-                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                  @endforeach
+                  @if(auth()->user()->role == 'Admin')
+                    @foreach ($companies as $company)
+                      <option value="{{ $company->id }}">{{ $company->name }}</option>
+                    @endforeach
+                  @else
+                    @foreach (auth()->user()->companies as $company)
+                      <option value="{{ $company->id }}">{{ $company->name }}</option>
+                    @endforeach
+                  @endif
+
 
 
 

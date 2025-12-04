@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  # MySQL Database (Shared between both apps)
+  db:
+    image: mariadb:latest
+    command: --lower_case_table_names=1
+    container_name: jobboard-mysql
+    restart: always
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: jobboard_db
+    volumes:
+      - mysql_data_container:/var/lib/mysql
+    networks:
+      - jobboard-network
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # phpMyAdmin
+  phpmyadmin:
+    depends_on:
+      db:
+        condition: service_healthy
+    image: phpmyadmin/phpmyadmin
+    container_name: jobboard-phpmyadmin
+    restart: always
+    ports:
+      - '8081:80'
+    environment:
+      PMA_HOST: db
+      UPLOAD_LIMIT: 2000M
+      MAX_EXECUTION_TIME: 3600
+    networks:
+      - jobboard-network
+
+  # Job Backoffice Application
+  backoffice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: job-backoffice
+    restart: always
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./storage:/var/www/storage
+      - ./bootstrap/cache:/var/www/bootstrap/cache
+    ports:
+      - '8000:8000'
+      - '5173:5173'
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_CONNECTION: mariadb
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: jobboard_db
+      DB_USERNAME: root
+      DB_PASSWORD: ''
+    networks:
+      - jobboard-network
+    command: >
+      sh -c "
+        echo '⏳ Installing Composer dependencies...' &&
+        composer install --no-interaction --prefer-dist --optimize-autoloader &&
+        
+        echo '⏳ Installing NPM dependencies...' &&
+        npm install &&
+        
+        echo '⏳ Setting up environment...' &&
+        php artisan key:generate --force &&
+        
+        echo '⏳ Running migrations...' &&
+        php artisan migrate --force &&
+        
+        echo '⏳ Seeding database...' &&
+        php artisan db:seed --force &&
+        
+        echo '✅ Database setup complete!' &&
+        echo '🚀 Starting Laravel server...' &&
+        php artisan serve --host=0.0.0.0 --port=8000 &
+        
+        echo '🎨 Starting Vite dev server...' &&
+        npm run dev -- --host
+      "
+
+volumes:
+  mysql_data_container:
+
+networks:
+  jobboard-network:
+    driver: bridge
+    name: jobboard-network
