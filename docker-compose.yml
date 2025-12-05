@@ -67,19 +67,24 @@ services:
     networks:
       - jobboard-network
     command: bash -c "
-        set -e
+
+        echo '🔧 Waiting for files to sync...'
+        sleep 2
         
         echo '🔧 Fixing permissions...'
-        chown -R www-data:www-data /var/www
-        chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+        chown -R www-data:www-data /var/www || true
+        chmod -R 775 /var/www/storage /var/www/bootstrap/cache || true
         
         echo '⏳ Installing Composer dependencies...'
-        composer install --no-interaction --prefer-dist --optimize-autoloader
+        composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
         
-        echo '⏳ Installing NPM dependencies...'
-        npm install
+        echo '⏳ Installing NPM dependencies... (this may take 2-3 minutes)'
+        npm ci --prefer-offline --no-audit
+        
+        echo '✅ NPM install completed!'
         
         echo '⏳ Setting up environment...'
+        [ ! -f .env ] && cp .env.example .env || true
         php artisan key:generate --force
         
         echo '⏳ Running migrations...'
@@ -96,7 +101,7 @@ services:
         sleep 5
         
         echo '🎨 Starting Vite dev server...'
-        npm run dev -- --host
+        exec npm run dev -- --host
       "
 
 volumes:
