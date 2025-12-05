@@ -66,35 +66,36 @@ services:
       DB_PASSWORD: ''
     networks:
       - jobboard-network
-    command: >
-      sh -c "
-        echo '🔧 Fixing permissions...' &&
-        chown -R www-data:www-data /var/www &&
-        chmod -R 775 /var/www/storage /var/www/bootstrap/cache &&
+    command: bash -c "
+        set -e
         
-        echo '⏳ Installing Composer dependencies...' &&
-        composer install --no-interaction --prefer-dist --optimize-autoloader &&
+        echo '🔧 Fixing permissions...'
+        chown -R www-data:www-data /var/www
+        chmod -R 775 /var/www/storage /var/www/bootstrap/cache
         
-        echo '⏳ Installing NPM dependencies...' &&
-        npm install &&
+        echo '⏳ Installing Composer dependencies...'
+        composer install --no-interaction --prefer-dist --optimize-autoloader
         
-        echo '⏳ Setting up environment...' &&
-        php artisan key:generate --force &&
+        echo '⏳ Installing NPM dependencies...'
+        npm install
         
-        echo '⏳ Running migrations...' &&
-        php artisan migrate --force &&
+        echo '⏳ Setting up environment...'
+        php artisan key:generate --force
         
-        echo '⏳ Seeding database...' &&
-        php artisan db:seed --force &&
+        echo '⏳ Running migrations...'
+        php artisan migrate --force
         
-        echo '✅ Database setup complete!' &&
-        echo '🚀 Starting Laravel server...' &&
+        echo '⏳ Seeding database...'
+        php artisan db:seed --force
+        
+        echo '✅ Database setup complete!'
+        echo '🚀 Starting Laravel server...'
         php artisan serve --host=0.0.0.0 --port=8000 &
         
-        echo '⏳ Waiting for Laravel to start...' &&
-        sleep 5 &&
+        echo '⏳ Waiting for Laravel to start...'
+        sleep 5
         
-        echo '🎨 Starting Vite dev server...' &&
+        echo '🎨 Starting Vite dev server...'
         npm run dev -- --host
       "
 
