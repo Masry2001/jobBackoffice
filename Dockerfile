@@ -27,6 +27,9 @@ WORKDIR /var/www
 # Copy application files
 COPY . .
 
+# Fix Git ownership issue
+RUN git config --global --add safe.directory /var/www
+
 # Set permissions for Laravel
 RUN mkdir -p storage/framework/{sessions,views,cache} \
     && mkdir -p storage/logs \

@@ -68,6 +68,10 @@ services:
       - jobboard-network
     command: >
       sh -c "
+        echo '🔧 Fixing permissions...' &&
+        chown -R www-data:www-data /var/www &&
+        chmod -R 775 /var/www/storage /var/www/bootstrap/cache &&
+        
         echo '⏳ Installing Composer dependencies...' &&
         composer install --no-interaction --prefer-dist --optimize-autoloader &&
         
@@ -86,6 +90,9 @@ services:
         echo '✅ Database setup complete!' &&
         echo '🚀 Starting Laravel server...' &&
         php artisan serve --host=0.0.0.0 --port=8000 &
+        
+        echo '⏳ Waiting for Laravel to start...' &&
+        sleep 5 &&
         
         echo '🎨 Starting Vite dev server...' &&
         npm run dev -- --host
