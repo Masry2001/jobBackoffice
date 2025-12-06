@@ -50,7 +50,8 @@ cd jobBackoffice
 
 # Run setup script
 # On Windows:
-setup.bat
+.\setup.bat
+
 
 # On Mac/Linux:
 chmod +x setup.sh
