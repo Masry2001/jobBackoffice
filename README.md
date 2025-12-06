@@ -46,7 +46,7 @@ Before you begin, ensure you have installed:
 # Clone the repository
 git clone https://github.com/Masry2001/jobBackoffice.git
 #using github CLI: gh repo clone Masry2001/jobBackoffice
-cd job-backoffice
+cd jobBackoffice
 
 # Run setup script
 # On Windows:
