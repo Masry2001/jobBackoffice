@@ -123,15 +123,7 @@ Both applications come with pre-configured `.env.example` files. The setup scrip
    4- take the key and put it in .env file, put it as a value for this key GEMINI_API_KEY
 - **Supabase**: Pre-configured for resume storage
 
-### Custom Configuration
 
-If you want to use your own API keys:
-
-1. Edit `.env` in the respective application folder
-2. Update the following variables:
-   - `GEMINI_API_KEY` - Your Gemini API key
-   - `SUPABASE_*` - Your Supabase credentials
-3. Restart the container: `docker-compose restart`
 
 ## Project Structure
 
