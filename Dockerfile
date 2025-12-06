@@ -1,4 +1,5 @@
-FROM php:8.4-cli
+# Base PHP runtime
+FROM php:8.4-cli 
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \

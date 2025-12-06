@@ -74,11 +74,12 @@ In a **new terminal window**:
 # Clone the repository
 git clone https://github.com/Masry2001/jobApp.git
 #using github CLI: gh repo clone Masry2001/jobApp
-cd job-app
+cd jobApp
 
 # Run setup script
 # On Windows:
-setup.bat
+.\setup.bat
+
 
 # On Mac/Linux:
 chmod +x setup.sh
